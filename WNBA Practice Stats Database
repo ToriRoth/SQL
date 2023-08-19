@@ -85,14 +85,14 @@ SELECT players.name, players.age, teams.team FROM players
     ON players.id = teams.customer_id;
     
 ~Display player name with their player friend.    
-SELECT a.name, b.name FROM friends
+SELECT a.name as player, b.name as players_friend FROM friends
     JOIN players a
     ON friends.friend1_id = a.id
     JOIN players b
     ON friends.friend2_id = b.id;
     
  ~ Display player's team with their friend's team.
-SELECT a.team, b.team FROM friends
+SELECT a.team as players_team, b.team as friends_team FROM friends
 JOIN teams a
 ON friends.friend1_id = a.customer_id
 JOIN teams b
