@@ -56,13 +56,26 @@ VALUES
     ('Company JJ', 'Manufacturing', 370.0, 3100, 1, 20, 12, 7.6),
     ('Company KK', 'Healthcare', 150.2, 3400, 0, 16, 8, 5.3);
 
-#Use CASE to create ranking of time-off benefits and identify number of companies per ranking
-SELECT count(*) as number_of_companies,
-CASE WHEN paid_time_off_days >= 20 AND maternity_leave_weeks >= 12 THEN 'excellent_time_off_benefits'
-WHEN paid_time_off_days >= 16 AND maternity_leave_weeks >= 9 THEN 'average_time_off_benefits'
-ELSE 'below_average_time_off_benefits' END 'time_off_benefits'
+#Use CASE to assign each company as "excellent time off benefits," "average time off benefits" or "below average benefits" based on paid days off and maternity leave.
+
+SELECT company_name,
+CASE 
+  WHEN paid_time_off_days >= 20 AND maternity_leave_weeks >= 12 THEN 'excellent_time_off_benefits'
+  WHEN paid_time_off_days >= 16 AND maternity_leave_weeks >= 9 THEN 'average_time_off_benefits'
+  ELSE 'below_average_time_off_benefits' END 'time_off_benefits'
 FROM fortune_companies
-GROUP BY time_off_benefits;
+ORDER BY company_name
+;
+
+#Using the above designations, count how many companies in each category.
+SELECT count(*) as number_of_companies,
+CASE 
+  WHEN paid_time_off_days >= 20 AND maternity_leave_weeks >= 12 THEN 'excellent_time_off_benefits'
+  WHEN paid_time_off_days >= 16 AND maternity_leave_weeks >= 9 THEN 'average_time_off_benefits'
+  ELSE 'below_average_time_off_benefits' END 'time_off_benefits'
+FROM fortune_companies
+GROUP BY time_off_benefits
+;
 
 #Identify industries with above average paid time off and maternity leave
 SELECT round(avg(paid_time_off_days)), round(avg(maternity_leave_weeks)), industry
@@ -81,7 +94,7 @@ ORDER BY average_revenue desc;
 SELECT max(paid_time_off_days), min(paid_time_off_days), avg(paid_time_off_days)
 FROM fortune_companies;
 
-#Identify maximum, minimum and average of average employy tenure
+#Identify maximum, minimum and average of average employee tenure
 SELECT max(avg_employee_tenure), min(avg_employee_tenure), avg(avg_employee_tenure)
 FROM fortune_companies;
 
