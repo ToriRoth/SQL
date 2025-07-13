@@ -214,3 +214,11 @@ INNER JOIN events
 ON vips.event = events.event_id
 WHERE events.event_type = "Keynote")
 ;
+
+#List all vips and the speaker they are giving feedback to
+SELECT vips.last_name as person_giving_feedback
+, feedback.last_name as speaker_to_receive_feedback
+FROM vips
+LEFT JOIN vips as feedback
+ON vips.provides_feedback_to = feedback.member_id
+;
